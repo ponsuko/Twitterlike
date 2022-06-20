@@ -1,18 +1,38 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="list">
+      <Item 
+        v-for="whisper in orderBy(whispers,'date',-1)"
+        :key="whisper.id"
+        :id="whisper.id"
+        :uid="whisper.uid" 
+      />
+    </div> 
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+
+import Item from '@/components/Item.vue' 
+import { db } from '../main'
+import Vue2Filters from 'vue2-filters' 
 
 export default {
   name: 'HomeView',
+  data () {
+    return {
+      whispers: []
+    }
+  },
+  firestore () {
+    return {
+      whispers: db.collection('whispers')
+    }
+  },
   components: {
-    HelloWorld
-  }
+    Item
+  },
+  mixins: [Vue2Filters.mixin] 
 }
 </script>
